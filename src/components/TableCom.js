@@ -42,13 +42,13 @@ function TableCom({
 
   const getRole = (id) => {
     if (salesManagers.find((item) => item.staffModel.staffId === id)) {
-      return "Sales Manager";
+      return "SALES_MANAGER";
     } else if (
       salesPurchaseManagers.find((item) => item.staffModel.staffId === id)
     ) {
-      return "Sales Purchase Manager";
+      return "SALES_PURCHASE_MANAGER";
     } else if (storeManagers.find((item) => item.staffModel.staffId === id)) {
-      return "Store Manager";
+      return "STORE_MANAGER";
     } else {
       return "No Role";
     }
@@ -64,8 +64,6 @@ function TableCom({
     getStaff();
     getRoles();
   }, [staff]);
-
-  // const classes = useStyles();
 
   return (
     <div>
@@ -113,7 +111,6 @@ function TableCom({
                       </Button>
                       <Button
                         variant="outlined"
-                        // color="black"
                         sx={{
                           textTransform: "none",
                           backgroundColor: "#ffffff",
@@ -130,7 +127,6 @@ function TableCom({
 
                       <Button
                         variant="outlined"
-                        // color="black"
                         sx={{
                           textTransform: "none",
                           backgroundColor: "#ffffff",

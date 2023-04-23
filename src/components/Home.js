@@ -19,6 +19,7 @@ import {
 } from "@material-ui/core";
 import { v4 as uuid } from "uuid";
 import axios from "axios";
+import { logRoles } from "@testing-library/react";
 
 const useStyles = makeStyles((theme) => ({
   button: {
@@ -65,7 +66,7 @@ const Home = () => {
   };
 
   const handleSelectedStoreChange = (event) => {
-    setSelectedStore(event.target.value - "a");
+    setSelectedStore(event.target.value);
   };
 
   const handleSelectedRoleChange = (event) => {
@@ -86,7 +87,7 @@ const Home = () => {
       "http://stock.staging.digitalregister.in:8080/api/v2/staffAccess/get/b78a77e4-5063-4810-b8cb-0de1b9c3f099"
     );
     response.then((res) => {
-      const data = res.data;
+      const {data} = res;
       setStoreManager(data.storeManagerModels);
       setSalesManager(data.salesManagerModels);
       setSalesPurchaseManager(data.salesPurchaseManagerModels);
@@ -129,7 +130,7 @@ const Home = () => {
     const newResponse = await axios.post(
       "http://stock.staging.digitalregister.in:8080/api/v1/staffAccess/add",
       {
-        access_type: selectedNewRole,
+        access_type: selectedRole,
         staffId: response.data.staffId,
         storeId: selectedStore,
       }
@@ -139,25 +140,25 @@ const Home = () => {
 
   const handleAddStaff = async () => {
     const id = uuid();
-    if(selectedStore==="b78a77e4-5063-4810-b8cb-0de1b9c3f099"){
-    const responce = await axios.post(
-      "http://stock.staging.digitalregister.in:8080/api/v1/staff/add",
-      {
-        businessId: "kbktbFmdvENXoEriN0UD7VboJET2",
-        name: name,
-        phone: code + mobile,
-        staffId: id,
-      }
-    );
+    if (selectedStore === "b78a77e4-5063-4810-b8cb-0de1b9c3f099") {
+      const responce = await axios.post(
+        "http://stock.staging.digitalregister.in:8080/api/v1/staff/add",
+        {
+          businessId: "kbktbFmdvENXoEriN0UD7VboJET2",
+          name: name,
+          phone: code + mobile,
+          staffId: id,
+        }
+      );
 
-    const newRes = await axios.post(
-      "http://stock.staging.digitalregister.in:8080/api/v1/staffAccess/add",
-      {
-        access_type: selectedRole,
-        staffId: responce.data.staffId,
-        storeId: selectedStore,
-      }
-    );
+      const newRes = await axios.post(
+        "http://stock.staging.digitalregister.in:8080/api/v1/staffAccess/add",
+        {
+          access_type: selectedRole,
+          staffId: responce.data.staffId,
+          storeId: selectedStore,
+        }
+      );
     }
 
     navigate("/");
@@ -192,7 +193,7 @@ const Home = () => {
       }}
     >
       <Navbar openModel={handleClickOpen} />
-      <div className="btn" style={{marginBottom:"2%"}}>
+      <div className="btn" style={{ marginBottom: "2%" }}>
         <Button
           variant="contained"
           value="1"
@@ -316,9 +317,9 @@ const Home = () => {
                   variant="outlined"
                   defaultValue={editMode ? getRole(userEdit.staffId) : ""}
                 >
-                  <MenuItem value="role1">Store Admin</MenuItem>
-                  <MenuItem value="role2">Sales Operator</MenuItem>
-                  <MenuItem value="role3"> Sales Purchase Operator</MenuItem>
+                  <MenuItem value="STORE_MANAGER">Store Admin</MenuItem>
+                  <MenuItem value="SALES_MANAGER">Sales Operator</MenuItem>
+                  <MenuItem value="SALES_PURCHASE_MANAGER"> Sales Purchase Operator</MenuItem>
                 </Select>
               </FormControl>
             </Grid>
